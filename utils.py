@@ -1,7 +1,7 @@
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 import pandas as pd
-from features.wavelet import wavelet_transform, wavelet_shrinkage
+from wavelet import wavelet_transform, wavelet_shrinkage
 
 import matplotlib.pyplot as plt
 import seaborn as sns
