@@ -10,6 +10,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import ListedColormap
 
 import plotly.express as px
+import os
 
 
 def load():
@@ -51,6 +52,36 @@ def load():
     test_df['class'] = test_labels
 
     return train_df, test_df
+
+
+#for cnn train/test split
+def load1():
+
+    def load_and_resize_images(folder_path, target_size):
+        transform = transforms.Compose([
+            transforms.Resize(target_size),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        ])
+
+        dataset = ImageFolder(folder_path, transform=transform)
+        image_paths = [path for path, _ in dataset.imgs]
+        labels = [dataset.classes[label] for _, label in dataset.samples]
+        return image_paths, labels
+
+    training_folder = 'data/Training'
+    testing_folder = 'data/Testing'
+    target_size = (224, 224)
+
+    train_image_paths, train_labels = load_and_resize_images(training_folder, target_size)
+    test_image_paths, test_labels = load_and_resize_images(testing_folder, target_size)
+
+    train_df = pd.DataFrame({'path': train_image_paths, 'label': train_labels})
+    test_df = pd.DataFrame({'path': test_image_paths, 'label': test_labels})
+
+    return train_df, test_df
+
+
 
 
 def visualize_points(df, pca):
